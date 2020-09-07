@@ -1,0 +1,28 @@
+{% extends '../../main/base.html' %}
+{% load static %}
+{% block main_title %}Мои подписки{% endblock %}
+{% block content %}
+  <div class="card-list">
+  {% csrf_token %}
+  {% for follow in follows %}
+    {% include '../../panels/following_author.html' with author=follow.author recipes=follow.recipes %}
+  {% endfor %}
+ </div>
+{% endblock content %}
+{% block scripts %}
+ <script src="{% static '/js/components/MainCards.js' %}"></script>
+
+ <script src="{% static '/js/components/Purchpurachases.js' %}"></script>
+ <script src="{% static '/js/components/Favorites.js' %}"></script>
+
+ <script src="{% static '/js/components/CardList.js' %}"></script>
+ <script src="{% static '/js/components/Header.js' %}"></script>
+
+
+ <script src="{% static '/js/api/Api.js' %}"></script>
+
+ <script src=" {% static '/js/components/MyFollow.js' %}"></script>
+ <script src="{% static '/js/components/Subscribe.js' %}"></script>
+
+ <script src="{% static 'myFollow.js' %}"></script>
+{% endblock %}

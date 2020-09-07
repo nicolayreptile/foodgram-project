@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Рецепты</title>    
+    {% block stylesheets %}{% endblock  %}
+    <link rel="stylesheet" href="{% static '/pages/index.css' %}" />
+  </head>
+
+  <body class="body">
+
+    <header class="header">
+    {% include 'templates/main/nav.html' %}
+    </header>
+
+    <main class="main container">
+      <div class="main__header">
+      {% include  'templates/main/header.html' %}
+      </div>
+      {% block content %}
+      
+      {% endblock %}
+      <nav class="pagination" aria-label="Search results pages">
+      </nav>
+    </main>
+
+    <footer class="footer">
+    {% include 'templates/main/footer.html' %}
+    </footer>
+    <script src="{% static '/js/config/config.js' %}"></script>
+    {% block scirpts %}
+    {% endblock  %}
+  </body>
+</html>

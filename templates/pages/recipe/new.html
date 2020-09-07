@@ -1,0 +1,90 @@
+{% extends '../../main/base.html' %}
+{% block stylesheets %}
+{% load static %}
+ <link rel="stylesheet" href="{% static '/pages/form.css' %}">
+{% endblock  %}
+ {% block main_title %}Новый рецепт{% endblock %}
+{% block content %}
+{% load common_filters %}
+<div class="form-container">
+  <form class="form" method="post" enctype="multipart/form-data" action={% url 'recipe_new' %}>
+  {% csrf_token %}
+  {% for field in form %}
+    <div class="form__group">
+      {% if field.name == 'tags' %}
+        <p class="form__label">{{ field.label }}</p>
+        <div class="form__field-group">
+          <div class="tags">
+            {% for tag in field  %}
+              <div class="tags__item">
+                  <input type="checkbox" name="tags" id="id_breakfast" class="tags__checkbox tags__checkbox_style_
+                  {% if tag.data.label == "Завтрак" %}
+                  tags__checkbox_style_orange
+                  {% elif tag.data.label == "Обед" %}
+                  tags__checkbox_style_green
+                  {% elif tag.data.label == 'Ужин' %}
+                  tags__checkbox_style_purple
+                  {% endif %}" value={{ tag.data.value }}>
+                  <label for="id_breakfast" class="tags__label">{{ tag.data.label }}</label>
+              </div>
+            {% endfor %}
+          </div>
+          {% if field.errors %}
+              {% for error in field.errors %}
+                  <span class="form__error">{{error|escape}}</span>
+              {% endfor %}
+           {% endif %} 
+        </div>
+      {% else %}
+        <label for="id_{{ field.name }}" class="form__label">{{ field.label }}</label>
+        <div class="form__field-group">
+           <div class="form__field-group">            
+              {% if field.name == 'ingredients' %}
+                  <div class="form__field-group-ingredientes">
+                      <div class="form__dropdown">
+                            {{ field }}
+                            <div class="form__dropdown-items"></div>
+                      </div>
+                      {{ form.quantity }}
+                      <label for="cantidad" class="form__label" id="cantidadVal">шт.</label>
+                      <span class="form__ingredient-link" id="addIng">Добавить ингредиент</span>
+                      <span class="form__error"></span>
+                  </div> 
+                  {% if field.errors %}
+                  {% for error in field.errors %}
+                      <span class="form__error">{{error|escape}}</span>
+                  {% endfor %}
+                  {% endif %} 
+              {% elif field.name == 'image' %}
+                <label for="id_file" class="form__file-button">Выбрать файл</label>
+                {{ field }}
+              {% elif field.name == 'quantity'%}             
+              {% else %}
+              <div class="form__field-group">
+                 {{ field }}
+                   {% if field.errors %}
+                    {% for error in field.errors %}
+                    <span class="form__error">{{error|escape}}</span>
+                    {% endfor %}
+                   {% endif %} 
+              </div>                    
+                {% endif %}
+                
+                
+        </div>
+        </div>
+      {% endif %}
+    </div>
+  {% endfor %}
+  <div class="form__footer">
+    <button class="button button_style_blue" type="submit">Создать рецепт</button>
+  </div>
+</form>
+</div>
+{% endblock %}
+{% block scirpts %}
+    <script src="{% static '/js/components/Header.js' %}"></script>
+    <script src="{% static '/js/utils/debouncing.js' %}"></script>
+    <script src="{% static '/js/api/Api.js' %}"></script>
+    <script src="{% static 'formRecipe.js' %}"></script>
+{% endblock  %}

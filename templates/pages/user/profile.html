@@ -1,0 +1,42 @@
+{% extends '../../main/base.html' %}
+{% load static %}
+{% block main_title %}
+{{ author.username }}
+{% endblock %}
+{% block content %}
+{% if user.is_authenticated %}
+<p id="subscribe_btn">
+      {% if in_followings %}
+      <button class="button button_style_light-blue-outline" name="subscribe" data-id="{{ author.id }}">Отписаться</button>
+      {% else %}
+      <button class="button button_style_blue" name="subscribe" data-out data-id="{{ author.id }}">Подписаться на автора</button>
+      {% endif %}
+</p>
+
+{% csrf_token %}
+{% endif %}
+<div class="card-list">      
+      {% for recipe in recipes %}
+      {% include '../../panels/recipe.html' with recipe=recipe%}
+      {% endfor %}
+</div>      
+{% endblock %}
+{% block scripts %}
+
+ <script src="{% static '/js/components/MainCards.js' %}"></script>
+
+ <script src="{% static '/js/components/Purchpurachases.js' %}"></script>
+ <script src="{% static '/js/components/Favorites.js' %}"></script>
+
+ <script src="{% static '/js/components/CardList.js' %}"></script>
+ <script src="{% static '/js/components/Header.js' %}"></script>
+
+
+ <script src="{% static '/js/api/Api.js' %}"></script>
+
+ <script src=" {% static '/js/components/AuthorFollow.js' %}"></script>
+ <script src="{% static '/js/components/Subscribe.js' %}"></script>
+
+ <script src="{% static 'authorFollow.js' %}"></script>
+
+{% endblock %}
