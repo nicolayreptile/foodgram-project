@@ -74,6 +74,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'apps.users.context_processor.shop_list_count',
             ],
              'libraries': {
                  'common_filters': 'helpers.templates_tags.common_filters',
@@ -149,3 +150,5 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     ]
 }
+
+SHOP_LIST_SESSION_ID = 'shop_list'

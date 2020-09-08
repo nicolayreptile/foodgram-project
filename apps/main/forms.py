@@ -5,6 +5,33 @@ from apps.main.models import Recipe
 from apps.main.models import Tag
 from apps.main.models import Unit
 
+class IngredientWidget(forms.MultiWidget):
+    
+    def __init__(self, attrs=None):
+        widgets = [
+            forms.TextInput(
+                attrs = {
+                    'type': 'text',
+                    'id': "nameIngredient",
+                    'class': 'form__input',
+                }                
+            ),
+            forms.NumberInput(
+                attrs = {
+                    'type': 'number',
+                    'id': 'quantityIngredient',
+                    'class': 'form__input'
+                }
+            )
+        ]
+        super().__init__(widgets, attrs)
+        
+    def decompress(self, value):
+        if value:
+            return (value.ingredient, value.quantity)
+        return [None, None]
+            
+      
 
 class RecipeForm(forms.ModelForm):
     title = forms.CharField(
@@ -16,16 +43,20 @@ class RecipeForm(forms.ModelForm):
             'class': 'form__input',
         })
     )
-    ingredients = forms.ModelMultipleChoiceField(
-        label = 'Ингредиенты',
-        queryset = Ingredient.objects.all()
-        # widget = forms.MultiWidget(attrs={
-        #     'type': 'text',
-        #     'id': "nameIngredient",
-        #     'class': 'form__input',
-        #     'min': '0'
-        # }),        
-    )
+    # ingredients = forms.ModelMultipleChoiceField(
+    #     label = 'Ингредиенты',
+    #     queryset = Ingredient.objects.all(),
+    #     widget = forms.MultiWidget(
+    #         widgets=[forms.TextInput, forms.IntegerField],            
+    #         attrs={
+    #         'type': 'text',
+    #         'id': "nameIngredient",
+    #         'class': 'form__input',
+    #         'min': '0'
+    #     }),        
+    # )
+    
+    ingredients = IngredientWidget()
     cook_time = forms.TimeField(
         label = 'Время приготовления',
         widget = forms.TimeInput(attrs={
@@ -47,14 +78,6 @@ class RecipeForm(forms.ModelForm):
             'name': 'description',
             'class': 'form__textarea',
             'rows': '8'
-        })
-    )
-    quantity = forms.CharField(
-        label = 'Количество',
-        widget = forms.NumberInput(attrs={
-            'id': 'cantidad',
-            'class': 'form__input',
-            'min': '0'
         })
     )
     image = forms.ImageField(

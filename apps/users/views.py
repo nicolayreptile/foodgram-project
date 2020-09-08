@@ -11,6 +11,7 @@ from apps.main.models import Ingredient
 from apps.users.forms import UserSignupForm
 from apps.users.models import Favorite
 from apps.users.models import Follow
+from apps.users.anonimous_shop_list import AnonimousShopList
 
 
 class UserSignup(CreateView):
@@ -69,7 +70,16 @@ class UserFollows(LoginRequiredMixin, ListView):
         return context
     
 
-class UserShopList(LoginRequiredMixin, ListView):
+class UserShopList(ListView):
     model = Ingredient
     template_name = 'pages/user/shoplist.html'
-    context_object_name = 'shoplist'
+    context_object_name = 'recipes'
+    
+    def get_queryset(self):
+        if self.request.user.is_authenticated:
+            qs = Recipe.objects.filter(in_shop_list__user=self.request.user)
+        else:
+            shop_list = AnonimousShopList(self.request)
+            qs = Recipe.objects.filter(pk__in=shop_list.items)
+        return qs
+    

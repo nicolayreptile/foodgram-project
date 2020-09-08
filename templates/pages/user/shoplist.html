@@ -1,0 +1,31 @@
+{% extends '../../main/base.html' %}
+{% load static %}
+{% block stylesheets %}
+ <link rel="stylesheet" href="{% static '/pages/shopList.css' %}">
+{% endblock %}
+{% block main_title %}
+Список покупок
+{% endblock %}
+{% block content %}
+<div class="card-list card-list_column">
+    {% if shop_list_count > 0 %}
+        <ul class="shopping-list">
+        {% csrf_token %}
+        {% for recipe in recipes %}
+            {% include '../../panels/shopping_list_item.html' with recipe=recipe%}
+        {% endfor %}
+        </ul>
+    {% else %}
+    <p>Список пуст</p>
+    {% endif %}
+</div>
+{% if shop_list_count > 0 %}
+    <button class="button button_style_blue">Скачать список</button>
+{% endif %}
+{% endblock %}
+{% block scripts %}
+    <script src="{% static '/js/components/Header.js' %}"></script>
+    <script src="{% static '/js/components/ShopList.js' %}"></script>
+    <script src="{% static '/js/api/Api.js' %}"></script>
+    <script src="{% static 'shopList.js' %}"></script>
+{% endblock %}

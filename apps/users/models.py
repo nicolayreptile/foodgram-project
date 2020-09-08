@@ -37,3 +37,4 @@ class ShopList(models.Model):
     def get_shop_list(self):
         # TODO
         pass
+        
