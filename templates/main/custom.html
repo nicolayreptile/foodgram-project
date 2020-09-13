@@ -1,0 +1,12 @@
+{% extends './base.html' %}
+{% block content %}
+<div class="custom-center-block">
+        <p class="custom-text-block">
+        {% block message %}
+        {% endblock %}
+        </p>
+        <div class="custom-button-block">
+            <button class="button button_style_blue"><a class='footer__link link' href='{% url 'index' %}'>Перейти на главную</a></button>
+        </div>
+    </div>
+{% endblock %}

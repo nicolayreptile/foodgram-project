@@ -2,7 +2,11 @@
 __pycache__/
 *.py[cod]
 *$py.class
-
+migrations
+static/
+tmp/
+images/
+media/
 # C extensions
 *.so
 
@@ -104,6 +108,7 @@ celerybeat.pid
 # Environments
 .env
 .venv
+.fg-venv
 env/
 venv/
 ENV/
@@ -127,3 +132,4 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+.vscode/

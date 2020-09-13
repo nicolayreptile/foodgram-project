@@ -1,0 +1,23 @@
+<div class="card" data-id="{{ recipe.pk }}">
+                <a href="#" class="link" target="_blank"><img src="{{ recipe.image.url }}" alt="Какой-то текст" class="card__image"></a>
+                <div class="card__body">
+                    <a class="card__title link" href="{% url 'recipe_detail' pk=recipe.pk %}" target="_blank">{{ recipe.title }}</a>
+                    <ul class="card__items">
+                        {% include './recipe_tags.html' with tags=recipe.tags.all %}
+                    </ul>
+                    <div class="card__items card__items_column">
+                        <p class="card__text"><span class="icon-time"></span>{{ recipe.cook_time }}</p>
+                        <p class="card__text"><span class="icon-user"></span>{{ recipe.author }}</p>
+                    </div>
+                </div>
+                <div class="card__footer">
+                {% if recipe.pk in user_shop_list %}
+                    <button class="button button_style_light-blue-outline" name="purchases"><span class="icon-check button__icon"></span> Рецепт добавлен</button>
+                {% else %}
+                    <button class="button button_style_light-blue" name="purchases" data-out><span class="icon-plus button__icon"></span>Добавить в покупки</button>
+                {% endif %}                    
+                    {% ifequal request.path '/user/favorites' %}
+                        <button class="button button_style_none" name="favorites"><span class="icon-favorite icon-favorite_active"></span></button>
+                    {% endifequal %}
+                </div>
+</div>

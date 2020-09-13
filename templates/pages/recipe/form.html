@@ -1,0 +1,121 @@
+{% extends '../../main/base.html' %}
+{% block stylesheets %}
+{% load static %}
+ <link rel="stylesheet" href="{% static '/pages/form.css' %}">
+{% endblock  %}
+{% block content %}
+{% load common_filters %}
+<div class="form-container">
+  <form class="form" enctype="multipart/form-data" method="post" action="{% block form_action %} {% endblock %}">
+  {% csrf_token %}
+    <div class="form__group">
+        <label for="id_name" class="form__label">Название рецепта</label>
+            <div class="form__field-group">
+                {{ form.title }}
+                {% if form.title.errors %}
+                    {% for error in form.title.errors %}
+                        <span class="form__error">{{ error }}</span>
+                    {% endfor %}                    
+                {% endif %} 
+            </div>
+    </div>
+    <div class="form__group">
+        <p class="form__label">Теги</p>
+            <div class="form__field-group">
+                <div class="tags">
+                    {% for tag in form.tags  %}
+                    <div class="tags__item">
+                        <input type="checkbox" name="tags" id="id_breakfast" class="tags__checkbox tags__checkbox_style_
+                        {% if tag.data.label == "Завтрак" %}
+                        tags__checkbox_style_orange
+                        {% elif tag.data.label == "Обед" %}
+                        tags__checkbox_style_green
+                        {% elif tag.data.label == 'Ужин' %}
+                        tags__checkbox_style_purple
+                        {% endif %}" value={{ tag.data.value }}
+                        {% if tag.data.selected %}checked{% endif %}
+                        >                        
+                        <label for="id_breakfast" class="tags__label">{{ tag.data.label }}</label>
+                    </div>
+                    {% endfor %}
+                </div>
+                    {% if form.tags.errors %}
+                        {% for error in form.tags.errors %}
+                            <span class="form__error">{{ error }}</span>
+                        {% endfor %}                    
+                    {% endif %} 
+                </div>
+            </div>
+            <div class="form__group">
+                <label for="nameIngredient" class="form__label">Ингредиенты</label>
+                <div class="form__field-group">
+                    <div class="form__field-group-ingredientes">
+                        <div class="form__dropdown">
+                            {{ form.ingredients }}
+                            <div class="form__dropdown-items"></div>
+                        </div> 
+                        {{ form.quantity }}                        
+                        <label for="cantidad" class="form__label" id="cantidadVal">шт.</label>
+                    </div>
+                    {% block ingredients %}
+                    {% endblock  %}
+                    <span class="form__ingredient-link" id="addIng">Добавить ингредиент</span>
+                    {% if form.ingredients.errors %}
+                        {% for error in form.ingredients.errors %}
+                            <span class="form__error">{{ error }}</span>
+                        {% endfor %}                    
+                    {% endif %}
+                    {% if form.quantity.errors %}
+                        {% for error in form.quantity.errors  %}
+                            <span class="form__error">{{ error }}</span>
+                        {% endfor %}                    
+                    {% endif %} 
+                </div>
+            </div>
+            <div class="form__group">
+                <label for="id_time" class="form__label">Время приготовления</label>
+                <div class="form__field-group form__field-group_time">
+                    {{ form.cook_time }}
+                    <label for="id_time" class="form__label">минут</label>
+                    {% if form.cook_time.errors %}
+                        {% for error in form.cook_time.errors  %}
+                            <span class="form__error">{{ error }}</span>
+                        {% endfor %}                    
+                    {% endif %} 
+                </div>
+            </div>
+            <div class="form__group">
+                <label for="id_description" class="form__label">Описание</label>
+                <div class="form__field-group">
+                    {{ form.description }}
+                    {% if form.description.errors %}
+                        {% for error in form.description.errors %}
+                            <span class="form__error">{{ error }}</span>
+                        {% endfor %}                    
+                    {% endif %} 
+                </div>
+            </div>
+            <div class="form__group">
+                <span class="form__label">Загрузить фото</span>
+                <div class="form__field-group">
+                    <label for="id_file" class="form__file-button">Выбрать файл</label>
+                    {{ form.image }}
+                    {% if form.image.errors %}
+                        {% for error in form.image.errors %}
+                            <span class="form__error">{{ error }}</span>
+                        {% endfor %}                    
+                    {% endif %}                    
+                </div>
+            </div>
+  <div class="form__footer">
+    <button class="button button_style_blue" type="submit">Создать рецепт</button>
+  </div>
+</form>
+</div>
+{% endblock %}
+{% block scripts %}
+    <script src="{% static '/js/components/Header.js' %}"></script>
+    <script src="{% static '/js/utils/debouncing.js' %}"></script>
+    <script src="{% static '/js/api/Api.js' %}"></script>
+    <script src="{% static 'formRecipe.js' %}"></script>
+{% endblock  %}

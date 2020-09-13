@@ -1,0 +1,32 @@
+{% extends '../main/base.html' %}
+{% block stylesheets %}
+{% load static %}
+ <link rel="stylesheet" href="{% static '/pages/form.css' %}">
+{% endblock %}
+{% block main_title %}
+Регистрация
+{% endblock  %}
+{% block content %}
+{% load common_filters %}
+ <div class="form-container">
+        <form class="form" method="post" action={% url 'signup' %}>
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="form__group">
+                <label for="id_{{field.name}}" class="form__label">{{field.label}}</label>
+                <div class="form__field-group">
+                    {{field|addclass:"form__input"}}
+                    {% if field.errors %}
+                        {% for error in field.errors %}
+                            <span class="form__error">{{error}}</span>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+            <div class="form__footer">
+                <button class="button button_style_blue">Создать аккаунт</button>
+            </div>
+        </form>
+</div>
+{% endblock  %}

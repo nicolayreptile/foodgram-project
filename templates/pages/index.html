@@ -1,0 +1,25 @@
+{% extends '../main/base.html' %}
+{% block tags %}
+{% include  'main/tags.html' %}
+{% endblock %}
+{% block  content %}
+      <div class="card-list">
+      {% csrf_token %}   
+      {% for recipe in recipes %}
+      {% include '../panels/recipe.html' with recipe=recipe %}
+      {% endfor %}
+      </div>
+{% endblock %}
+{% block pagination %}
+    {% include '../main/pagination.html' with page_obj=page_obj %}
+{% endblock %}
+{% block scripts %}
+{% load static %}
+    <script src="{% static '/js/components/MainCards.js' %}"></script>
+    <script src="{% static '/js/components/Purchases.js' %}"></script>
+    <script src="{% static '/js/components/Favorites.js' %}"></script>
+    <script src="{% static '/js/components/CardList.js' %}"></script>
+    <script src="{% static '/js/components/Header.js' %}"></script>
+    <script src="{% static '/js/api/Api.js' %}"></script>
+    <script src="{% static 'favorite.js' %} "></script>    
+{% endblock  %}

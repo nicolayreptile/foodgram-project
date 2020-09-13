@@ -1,0 +1,13 @@
+{% extends './form.html' %}
+ {% block main_title %}Редактировать рецепт "{{ recipe.title }}"{% endblock %}
+  {% block form_action %}{% url 'recipe_update' pk=recipe.pk %}{% endblock  %}
+ {% block ingredients %}
+ {% for item in ingredients_with_quantity %}
+    <div class="form__field-item-ingredient" id="{{ item.ingredient.pk }}"><span> {{ item.ingredient }} {{ item.quantity }} {{ item.ingredient.unit }}</span> <span class="form__field-item-delete"></span>
+        <input id="nameIngredient_2" name="nameIngredient" type="hidden" value="{{ item.ingredient.id }}">
+        <input id="valueIngredient_2" name="valueIngredient" type="hidden" value="{{ item.quantity }}">
+        <input id="unitsIngredient_2" name="unitsIngredient" type="hidden" value="{{ item.ingredient.unit }}">
+    </div>
+{% endfor %}
+{% endblock  %}
+{% block submit_text %}Сохранить изменения{% endblock %}
