@@ -139,12 +139,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'static/'
+STATIC_ROOT = '/opt/services/web/static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'frontend/',
 ]
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media/'
+MEDIA_ROOT = '/opt/services/web/static/'
 
 LOGIN_REDIRECT_URL = "index"
 
