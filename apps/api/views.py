@@ -76,17 +76,6 @@ class FollowHandler(UserActivityBaseHandler):
     permission_classes = (IsAuthenticated, ) 
         
 
-# class ShopListHandler(UserActivityBaseHandler):
-    
-#     model = ShopList
-#     serializer_class = ShopListSerializer
-#     lookup_field = 'recipe'
-    
-#     def get_serializer_class(self):
-#         if not self.request.user.is_authenticated:
-#             return AnonimousShopListSerializer
-#         return super().get_serializer_class()
-
 class ShopListHandler(APIView):
     
     def post(self, request, *args, **kwargs):

@@ -17,18 +17,6 @@ class Tag(models.Model):
         return self.name
 
 
-class Unit(models.Model):
-    ''' Единицы измерения, пока что не используются '''
-    name = models.CharField('Название', max_length=254)
-    
-    class Meta:
-        verbose_name = 'единица измерения'
-        verbose_name_plural = 'единицы измерения'
-        
-    def __str__(self):
-        return self.name
-
-
 class Ingredient(models.Model):    
     name = models.CharField('Наименование', db_index=True, max_length=254, unique=True)
     unit = models.CharField('Единица измеерния', max_length=63)

@@ -47,12 +47,22 @@ class UserFavorites(LoginRequiredMixin, ListView):
     model = Recipe
    
     def get_queryset(self):
-        qs = Recipe.objects.filter(in_favorites__user=self.request.user)
+        qs = Recipe.objects.filter(in_favorites__user=self.request.user).prefetch_related('in_shop_list')
         exclude_tags = self.request.GET.getlist('exclude')
         if exclude_tags:
             exclude_tags = list(map(int, exclude_tags))
             qs = qs.exclude(tags__pk__in=exclude_tags)       
         return qs
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user_shop_list'] = (
+                                    self.request.user.shop_list
+                                    .filter(recipe__in=context['recipes'])
+                                    .values_list('recipe', flat=True)
+                                    )
+        return context
+    
 
      
 class UserFollows(LoginRequiredMixin, ListView):

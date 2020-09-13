@@ -2,6 +2,7 @@ from django.views.generic import ListView
 from django.views.generic import CreateView
 from django.views.generic import UpdateView
 from django.views.generic import DetailView
+from django.http import Http404
 from django.forms import inlineformset_factory
 
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -27,10 +28,13 @@ class RecipeList(ListView):
     
     def get_queryset(self):
         qs = super().get_queryset()
-        exclude_tags = self.request.GET.getlist('exclude')
+        exclude_tags = self.request.GET.get('exclude')
         if exclude_tags:
-            exclude_tags = list(map(int, exclude_tags))
-            qs = qs.exclude(tags__pk__in=exclude_tags)            
+            try:
+                exclude_tags = list(map(int, list(exclude_tags)))
+                qs = qs.exclude(tags__pk__in=exclude_tags)
+            except ValueError:
+                raise Http404
         return qs
 
     def get_context_data(self, **kwargs):
