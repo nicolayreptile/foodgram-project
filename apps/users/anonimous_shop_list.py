@@ -37,4 +37,3 @@ class AnonimousShopList:
     def clear(self):
         self.shop_list.clear()
         self.save()
-

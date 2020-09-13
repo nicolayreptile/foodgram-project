@@ -1,8 +1,11 @@
 from django.views.generic import CreateView
 from django.views.generic import DetailView
 from django.views.generic import ListView
+from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import get_user_model
+from django.http import FileResponse
+from reportlab.pdfgen import canvas
 
 from django.urls import reverse_lazy
 
@@ -11,7 +14,9 @@ from apps.main.models import Ingredient
 from apps.users.forms import UserSignupForm
 from apps.users.models import Favorite
 from apps.users.models import Follow
+from apps.users.models import ShopList
 from apps.users.anonimous_shop_list import AnonimousShopList
+from apps.users.helpers import ShopListToPdf
 
 
 class UserSignup(CreateView):
@@ -43,6 +48,10 @@ class UserFavorites(LoginRequiredMixin, ListView):
    
     def get_queryset(self):
         qs = Recipe.objects.filter(in_favorites__user=self.request.user)
+        exclude_tags = self.request.GET.getlist('exclude')
+        if exclude_tags:
+            exclude_tags = list(map(int, exclude_tags))
+            qs = qs.exclude(tags__pk__in=exclude_tags)       
         return qs
 
      
@@ -81,5 +90,18 @@ class UserShopList(ListView):
         else:
             shop_list = AnonimousShopList(self.request)
             qs = Recipe.objects.filter(pk__in=shop_list.items)
+        exclude_tags = self.request.GET.getlist('exclude')
+        
+        if exclude_tags:
+            exclude_tags = list(map(int, exclude_tags))
+            qs = qs.exclude(tags__pk__in=exclude_tags)
+
         return qs
+
+
+class UserShopListPdf(View):
     
+    def get(self, request, *args, **kwargs):
+        shop_list_to_pdf = ShopListToPdf(request)
+        pdf = shop_list_to_pdf.get_pdf()
+        return FileResponse(pdf, as_attachment=True, filename='shop_list.pdf', )

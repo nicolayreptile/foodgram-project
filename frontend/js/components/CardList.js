@@ -1,7 +1,7 @@
 class CardList extends MainCards {
     _eventUserAuth (e) {
         super._eventUserAuth(e);
-        if (this.target && this.target.name === 'purchpurchases') {
+        if (this.target && this.target.name === 'purchases') {
             this._eventPurchpurchases(this.target)
         }
         if (this.target && this.target.name === 'favorites') {
@@ -10,7 +10,7 @@ class CardList extends MainCards {
     }
     _eventUserNotAuth  (e)  {
         super._eventUserAuth(e);
-        if (this.target && this.target.name === 'purchpurchases') {
+        if (this.target && this.target.name === 'purchases') {
             this._eventPurchpurchases(this.target)
         }
     }

@@ -26,7 +26,7 @@ const configButton = {
         }
     }
 }
-const purchpurachases = new Purchpurachases(configButton.purchpurachases, api);
+const purchpurachases = new Purchases(configButton.purchpurachases, api);
 const favorites = new Favorites(configButton.favorites, api);
 
 const cardList = new CardList(container, '.card', header, api, true, {

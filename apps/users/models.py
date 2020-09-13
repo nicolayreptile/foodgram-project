@@ -33,8 +33,3 @@ class ShopList(models.Model):
     
     class Meta:
         unique_together = ('user', 'recipe')
-        
-    def get_shop_list(self):
-        # TODO
-        pass
-        

@@ -30,12 +30,17 @@
                         {% for error in form.password.errors %}
                             <span class="form__error">{{ error }}</span>
                         {% endfor %}
-                    {% endif %}                
+                    {% endif %}
+                    {% if form.errors %}
+                        {% for error in form.errors %}
+                            <span class="form__error">{{ error }}</span>
+                        {% endfor %}
+                    {% endif %}            
                 </div>
             </div>
             <div class="form__footer">
                 <button class="button button_style_blue">Войти</button>
-                <a class="form__forgot-link">Забыли пароль?</a>
+                <a class="form__forgot-link" href={% url 'password_reset' %}>Забыли пароль?</a>
             </div>
         </form>
     </div>

@@ -15,7 +15,7 @@ const configButton = {
         }
     }
 }
-const purchpurachases = new Purchpurachases(configButton.purchpurachases, api);
+const purchpurachases = new Purchases(configButton.purchpurachases, api);
 
 const cardList = new CardList(container, '.card', header, api, false, {
     purchpurachases

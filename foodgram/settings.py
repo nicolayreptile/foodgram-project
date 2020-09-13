@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
     'apps.main',
     'apps.users',
     'sorl.thumbnail',
@@ -137,11 +138,9 @@ STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'frontend/',
-    BASE_DIR / 'media/'
 ]
-
 MEDIA_URL = '/media/'
-MEDIAT_ROOT = BASE_DIR / 'media/'
+MEDIA_ROOT = BASE_DIR / 'media/'
 
 LOGIN_REDIRECT_URL ="index"
 
@@ -150,5 +149,8 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     ]
 }
+
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_FILE_PATH = BASE_DIR / 'tmp/send_mails'
 
 SHOP_LIST_SESSION_ID = 'shop_list'

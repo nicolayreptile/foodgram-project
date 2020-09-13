@@ -41,13 +41,12 @@ class Ingredient(models.Model):
         return self.name
 
 
-class Recipe(models.Model):
-    
+class Recipe(models.Model):    
     author = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='user_recipes', null=True)
     title = models.CharField('Название', db_index=True, max_length=254)
     description = models.TextField('Описание', blank=True, null=False)
     ingredients = models.ManyToManyField(Ingredient, through='RecipeIngredients')
-    tags = models.ManyToManyField(Tag, related_name='recipes', null=True)
+    tags = models.ManyToManyField(Tag, related_name='recipes')
     image = models.ImageField('Изображение', upload_to='images', null=True)
     cook_time = models.TimeField('Время приготовления')
     slug = models.SlugField('Адрес в адресной строке')
@@ -64,6 +63,9 @@ class Recipe(models.Model):
     
     def get_absolute_url(self):
         return reverse("recipe_detail", kwargs={"pk": self.pk})
+    
+    def get_ingredients_with_quantity(self):
+        return self.recipeingredients_set.only('ingredient', 'quantity')
 
 
 class RecipeIngredients(models.Model):

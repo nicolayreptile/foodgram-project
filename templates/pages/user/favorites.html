@@ -4,6 +4,9 @@
 <link rel="stylesheet" href="{% static '/pages/index.css' %}">
 {% endblock %}
 {% block main_title %}Избранное{% endblock %}
+{% block tags %}
+{% include  'main/tags.html' %}
+{% endblock %}
 {% block content %}
 <div class="card-list">
       {% csrf_token %}
@@ -14,7 +17,7 @@
 {% endblock %}
 {% block scripts %}
     <script src="{% static './js/components/MainCards.js' %}"></script>
-    <script src="{% static '/js/components/Purchpurachases.js' %}"></script>
+    <script src="{% static '/js/components/Purchases.js' %}"></script>
     <script src="{% static '/js/components/Favorites.js' %}"></script>
     
     <script src="{% static './js/components/CardList.js' %}"></script>

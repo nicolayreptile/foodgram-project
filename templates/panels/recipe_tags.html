@@ -1,0 +1,14 @@
+{% for tag in tags %}
+       <li class="card__item">
+          <span class="badge 
+          {% if tag.name == "Завтрак" %}
+          badge_style_orange
+          {% elif tag.name == "Обед" %}
+          badge_style_green
+          {% elif tag.name == "Ужин" %}
+          badge_style_purple
+          {% endif %}">
+          {{ tag }}
+          </span>
+       </li>       
+{% endfor %}
