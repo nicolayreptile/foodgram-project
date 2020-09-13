@@ -9,7 +9,6 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
-import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -23,14 +22,14 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 SECRET_KEY = '0u7i334lv9+g=u7fpo9os9)atf++ot%58y3ivxl8--1)zh4s(g'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+]
 
 INTERNAL_IPS = [
-    # ...
     '127.0.0.1',
-    # ...
 ]
 
 # Application definition
@@ -42,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
+
     'apps.main',
     'apps.users',
     'sorl.thumbnail',
@@ -77,9 +76,9 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'apps.users.context_processor.shop_list_count',
             ],
-             'libraries': {
-                 'common_filters': 'helpers.templates_tags.common_filters',
-    },
+            'libraries': {
+                'common_filters': 'helpers.templates_tags.common_filters',
+            },
         },
     },
 ]
@@ -142,7 +141,7 @@ STATICFILES_DIRS = [
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media/'
 
-LOGIN_REDIRECT_URL ="index"
+LOGIN_REDIRECT_URL = "index"
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [

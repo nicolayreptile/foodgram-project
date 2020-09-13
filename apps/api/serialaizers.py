@@ -1,9 +1,6 @@
 from django.contrib.auth import get_user_model
-from django.views.generic import TemplateView
 
 from rest_framework import serializers
-from rest_framework.validators import UniqueTogetherValidator
-
 
 from apps.main.models import Recipe
 from apps.main.models import Ingredient
@@ -15,47 +12,47 @@ from apps.users.anonimous_shop_list import AnonimousShopList
 
 
 class RecipeSerializer(serializers.ModelSerializer):
-    
+
     author = serializers.SlugRelatedField(read_only=True, slug_field='username')
-    
+
     class Meta:
         model = Recipe
         fields = '__all__'
-        
+
 
 class IngredientSerializer(serializers.ModelSerializer):
-    
+
     class Meta:
         model = Ingredient
         fields = '__all__'
-        
-        
+
+
 class FavoriteSerializer(serializers.ModelSerializer):
-    
+
     recipe = serializers.PrimaryKeyRelatedField(
-        queryset = Recipe.objects.all()
+        queryset=Recipe.objects.all()
     )
 
     class Meta:
         model = Favorite
         fields = ['recipe']
-        
+
 
 class FollowSerializer(serializers.ModelSerializer):
-    
+
     author = serializers.PrimaryKeyRelatedField(
-        queryset = get_user_model().objects.all()
+        queryset=get_user_model().objects.all()
     )
 
     class Meta:
         model = Follow
         fields = ['author']
-        
+
 
 class ShopListSerializer(serializers.ModelSerializer):
 
     recipe = serializers.PrimaryKeyRelatedField(
-        queryset = Recipe.objects.all()
+        queryset=Recipe.objects.all()
     )
 
     class Meta:
@@ -64,13 +61,13 @@ class ShopListSerializer(serializers.ModelSerializer):
 
 
 class AnonimousShopListSerializer:
-    
+
     def __init__(self, request):
         self.shop_list = AnonimousShopList(request)
         self.data = request.data
         self.recipe_id = None
-        
-    def is_valid(self, raise_exception=False):        
+
+    def is_valid(self, raise_exception=False):
         recipe_id = self.data.get('recipe')
         recipe_exists = Recipe.objects.filter(pk=recipe_id).exists()
         if raise_exception:
@@ -78,11 +75,9 @@ class AnonimousShopListSerializer:
                 raise serializers.ValidationError('Recipe not found')
         if recipe_exists:
             self.recipe_id = recipe_id
-        
+
     def save(self, *args, **kwargs):
         self.shop_list.add(self.recipe_id)
         self.data = {
             'recipe': self.recipe_id,
         }
-
-

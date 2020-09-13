@@ -14,7 +14,7 @@ urlpatterns = [
     path('favorites', UserFavorites.as_view(), name='favorites'),
     path('follows', UserFollows.as_view(), name='follows'),
     path('shoplist', UserShopList.as_view(), name='shoplist'),
-    path('shoplist/download',UserShopListPdf.as_view(), name='shoplist_download'),
+    path('shoplist/download', UserShopListPdf.as_view(), name='shoplist_download'),
     path('profile/<str:username>/', UserProfile.as_view(), name='profile'),
-    path('', include(auth_urls))    
+    path('', include(auth_urls))
 ]
