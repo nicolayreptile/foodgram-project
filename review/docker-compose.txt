@@ -1,0 +1,42 @@
+version: '3.8'
+
+volumes:
+  postgres_data:
+  static_dir:
+  media_dir:
+
+services:
+  db:
+    image: postgres:9.6
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - ./.env
+  web:
+    build: .
+    restart: always
+    volumes:
+      - static_dir:/opt/services/web/static
+      - media_dir:/opt/services/web/media
+    depends_on:
+      - db
+    env_file:
+      - ./.env
+    networks:
+      - nginx_network
+  nginx:
+    image: nginx
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - static_dir:/opt/services/web/static
+      - media_dir:/opt/services/web/media
+    ports:
+      - 8000:80
+    depends_on:
+      - web
+    networks:
+      - nginx_network
+
+networks:
+  nginx_network:
+    driver: bridge
