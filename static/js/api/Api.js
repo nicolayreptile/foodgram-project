@@ -2,11 +2,13 @@
 class Api {
     constructor(apiUrl) {
         this.apiUrl =  apiUrl;
+        this.csrftoken = csrftoken;
     }
   getPurchases () {
-    return fetch(`/purchases`, {
+    return fetch(this.apiUrl+`/shoplist`, {
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-CSRFToken': this.csrftoken        
       }
     })
       .then( e => {
@@ -17,13 +19,14 @@ class Api {
       })
   }
   addPurchases (id) {
-    return fetch(`/purchases`, {
+    return fetch(this.apiUrl+`/shoplist/`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-CSRFToken': this.csrftoken
       },
       body: JSON.stringify({
-        id: id
+        recipe: id
       })
     })
       .then( e => {
@@ -34,58 +37,62 @@ class Api {
       })
   }
   removePurchases (id){
-    return fetch(`/purchases/${id}`, {
+    return fetch(this.apiUrl+`/shoplist/${id}`, {
       method: 'DELETE',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-CSRFToken': this.csrftoken
       }
     })
       .then( e => {
           if(e.ok) {
-              return e.json()
+              return e.data
           }
           return Promise.reject(e.statusText)
       })
   }
   addSubscriptions(id) {
-    return fetch(`/subscriptions`, {
+    return fetch(this.apiUrl + `/follow/`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-CSRFToken': this.csrftoken
       },
       body: JSON.stringify({
-        id: id
+        author: id
       })
     })
       .then( e => {
           if(e.ok) {
-              return e.json()
+              return e.data
           }
           return Promise.reject(e.statusText)
       })
   }
   removeSubscriptions (id) {
-    return fetch(`/subscriptions/${id}`, {
+    return fetch(this.apiUrl + `/follow/${id}`, {
       method: 'DELETE',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-CSRFToken': this.csrftoken
       }
     })
       .then( e => {
           if(e.ok) {
-              return e.json()
+              return e.data
           }
           return Promise.reject(e.statusText)
       })
   }
   addFavorites (id)  {
-    return fetch(`/favorites`, {
+    return fetch(this.apiUrl+`/favorites/`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-CSRFToken': this.csrftoken
       },
       body: JSON.stringify({
-        id: id
+        recipe: id,
       })
     })
         .then( e => {
@@ -96,15 +103,16 @@ class Api {
         })
   }
   removeFavorites (id) {
-    return fetch(`/favorites/${id}`, {
+    return fetch(apiUrl+`/favorites/${id}`, {
       method: 'DELETE',
       headers: {
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+        'X-CSRFToken': this.csrftoken
+      },
     })
-        .then( e => {
-            if(e.ok) {
-                return e.json()
+        .then( e => {          
+            if(e.status == 204) {
+                return e.data
             }
             return Promise.reject(e.statusText)
         })
@@ -122,4 +130,5 @@ class Api {
                 return Promise.reject(e.statusText)
             })
     }
+
 }

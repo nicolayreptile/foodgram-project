@@ -7,6 +7,7 @@ class MyFollow extends MainCards{
     }
 
     _eventSubscribe  (target)  {
+        console.log(target.closest(this.card));
         const cardId = target.closest(this.card).getAttribute('data-id');
         if(target.hasAttribute('data-out')) {
             this.button.subscribe.addSubscribe(target,cardId)

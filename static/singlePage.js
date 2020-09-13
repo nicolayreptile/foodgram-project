@@ -27,7 +27,7 @@ const configButton = {
     subscribe: {
         attr: 'data-out',
         default: {
-            class: 'button_style_blue',
+            class: 'button_style_light-blue',
             text: 'Подписаться на автора'
         },
         active: {
@@ -36,7 +36,7 @@ const configButton = {
         }
     }
 }
-const purchpurachases = new Purchpurachases(configButton.purchpurachases, api);
+const purchpurachases = new Purchases(configButton.purchpurachases, api);
 const favorites = new Favorites(configButton.favorites, api);
 const subscribe = new Subscribe(configButton.subscribe, api);
 
