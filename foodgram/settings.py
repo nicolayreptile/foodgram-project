@@ -23,10 +23,15 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 SECRET_KEY = '0u7i334lv9+g=u7fpo9os9)atf++ot%58y3ivxl8--1)zh4s(g'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = False 
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
+    'yatube.cf',
+    'www.yatube.cf',
+    'foodgram.gq',
+    'www.foodgram.gq',
+    '84.201.128.149',
 ]
 
 INTERNAL_IPS = [
@@ -124,6 +129,10 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
+# https://docs.djangoproject.com/en/3.1/topics/i18n/
+
+# https://docs.djangoproject.com/en/3.1/topics/i18n/
+
 LANGUAGE_CODE = 'ru'
 
 TIME_ZONE = 'UTC'
@@ -144,7 +153,7 @@ STATICFILES_DIRS = [
     BASE_DIR / 'frontend/',
 ]
 MEDIA_URL = '/media/'
-MEDIA_ROOT = '/opt/services/web/static/'
+MEDIA_ROOT = '/opt/services/web/media/'
 
 LOGIN_REDIRECT_URL = "index"
 
