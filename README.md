@@ -1,2 +1,2 @@
-# foodgram-project
-foodgram-project
+# Продуктовый помощник
+Ссылочка https://foodgram.gq/
