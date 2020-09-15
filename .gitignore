@@ -9,6 +9,7 @@ images/
 media/
 # C extensions
 *.so
+html/
 
 # Distribution / packaging
 .Python
