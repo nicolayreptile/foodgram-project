@@ -1,0 +1,8 @@
+{% extends '../main/base.html' %}
+{% load static %}
+{% block main_title%}
+Что-то пошлое не так, и обязательно это починю. А пока попробуй ещё разок, может быть, получится :-)
+{% endblock %}
+{% block content %}
+<img src={% static 'images/disappearing_cat.jpg' %}>
+{% endblock %}

@@ -1,27 +1,36 @@
 <nav class="nav">
         <div class="nav__container container">
+        {% url 'index' as index_url %}
+        {% url 'follows' as follows_url %}
+        {% url 'recipe_new' as recipe_new_url %}
+        {% url 'favorites' as favorites_url %}
+        {% url 'shoplist' as shoplist_url %}
+        {% url 'password_change' as password_change_url %}
+        {% url 'logout' as logout_url %}
+        {% url 'login' as login_url %}
+        {% url 'signup' as signup_url %}
         {% if user.is_authenticated %}
-            <ul class="nav__items list">             
-                  <li class="nav__item{% ifequal request.path '/' %} nav__item_active {% endifequal %}"><a href="{% url 'index' %}" class="nav__link link">Рецепты</a></li>
-                  <li class="nav__item{% ifequal request.path '/user/follows' %} nav__item_active {% endifequal %}"><a href="{% url 'follows' %}" class="nav__link link">Мои подписки</a></li>
-                  <li class="nav__item{% ifequal request.path '/recipe/new' %} nav__item_active {% endifequal %}"><a href="{% url 'recipe_new' %}" class="nav__link link">Создать рецепт</a></li>
-                  <li class="nav__item{% ifequal request.path '/user/favorites' %} nav__item_active {% endifequal %}"><a href="{% url 'favorites' %}" class="nav__link link">Избранное</a></li>
-                  <li class="nav__item{% ifequal request.path 'recipe/new' %} nav__item_active {% endifequal %}"><a href="{% url 'shoplist' %}" class="nav__link link">Список покупок</a> <span class="badge badge_style_blue nav__badge" id="counter">{{ shop_list_count }}</span></li>
+            <ul class="nav__items list">
+                  <li class="nav__item{% ifequal request.path index_url %} nav__item_active {% endifequal %}"><a href="{{ index_url }}" class="nav__link link">Рецепты</a></li>
+                  <li class="nav__item{% ifequal request.path follows_url %} nav__item_active {% endifequal %}"><a href="{{ follows_url }}" class="nav__link link">Мои подписки</a></li>
+                  <li class="nav__item{% ifequal request.path recipe_new_url %} nav__item_active {% endifequal %}"><a href="{{ recipe_new_url }}" class="nav__link link">Создать рецепт</a></li>
+                  <li class="nav__item{% ifequal request.path favorites_url %} nav__item_active {% endifequal %}"><a href="{{ favorites_url }}" class="nav__link link">Избранное</a></li>
+                  <li class="nav__item{% ifequal request.path shoplist_url %} nav__item_active {% endifequal %}"><a href="{{ shoplist_url }}" class="nav__link link">Список покупок</a> <span class="badge badge_style_blue nav__badge" id="counter">{{ shop_list_count }}</span></li>
 
               </ul>
               <ul class="nav__items list">
-                  <li class="nav__item{% ifequal request.path 'recipe/new' %} nav__item_active {% endifequal %}"><a href="{% url 'password_change' %}" class="nav__link link">Изменить пароль</a></li>
-                  <li class="nav__item{% ifequal request.path 'recipe/new' %} nav__item_active {% endifequal %}"><a href="{% url 'logout' %}" class="nav__link link">Выход</a></li>
+                  <li class="nav__item{% ifequal request.path password_change_url %} nav__item_active {% endifequal %}"><a href="{{ password_change_url }}" class="nav__link link">Изменить пароль</a></li>
+                  <li class="nav__item{% ifequal request.path password_change_url %} nav__item_active {% endifequal %}"><a href="{{ logout_url }}" class="nav__link link">Выход</a></li>
               </ul>
         {% else %}
             <ul class="nav__items list">
-                <li class="nav__item{% ifequal request.path 'recipe/new' %} nav__item_active {% endifequal %}"><a href="{% url 'index' %}" class="nav__link link">Рецепты</a></li>
-                <li class="nav__item{% ifequal request.path 'recipe/new' %} nav__item_active {% endifequal %}"><a href="{% url 'shoplist' %}" class="nav__link link">Список покупок <span class="badge badge_style_blue nav__badge" id="counter">{{ shop_list_count }}</span></a></li>
+                <li class="nav__item{% ifequal request.path index_url %} nav__item_active {% endifequal %}"><a href="{{ index_url }}" class="nav__link link">Рецепты</a></li>
+                <li class="nav__item{% ifequal request.path shoplist_url %} nav__item_active {% endifequal %}"><a href="{{ shoplist_url }}" class="nav__link link">Список покупок <span class="badge badge_style_blue nav__badge" id="counter">{{ shop_list_count }}</span></a></li>
             </ul>
             <ul class="nav__items list">
-                <li class="nav__item{% ifequal request.path 'recipe/new' %} nav__item_active {% endifequal %}"><a href="{% url 'login' %}" class="nav__link link">Войти</a></li>
-                <li class="nav__item{% ifequal request.path 'recipe/new' %} nav__item_active {% endifequal %}"><a href="{% url 'signup' %}" class="button button_style_blue">Создать аккаунт</a></li>
-            </ul>        
-        {% endif %}            
+                <li class="nav__item{% ifequal request.path login_url %} nav__item_active {% endifequal %}"><a href="{{ login_url }}" class="nav__link link">Войти</a></li>
+                <li class="nav__item{% ifequal request.path signup_url %} nav__item_active {% endifequal %}"><a href="{{ signup_url }}" class="button button_style_blue">Создать аккаунт</a></li>
+            </ul>
+        {% endif %}
         </div>
 </nav>

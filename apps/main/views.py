@@ -22,7 +22,7 @@ class RecipeList(ListView):
         exclude_tags = self.request.GET.get('exclude')
         if exclude_tags:
             try:
-                exclude_tags = list(map(int, list(exclude_tags)))
+                exclude_tags = [int(tag_id) for tag_id in list(exclude_tags)]
                 qs = qs.exclude(tags__pk__in=exclude_tags)
             except ValueError:
                 raise Http404
@@ -32,14 +32,14 @@ class RecipeList(ListView):
         context = super().get_context_data(**kwargs)
         if self.request.user.is_authenticated:
             context['user_shop_list'] = (
-                self.request.user.shop_list
-                .filter(recipe__in=context['recipes'])
-                .values_list('recipe', flat=True)
+                self.request.user.shop_list.filter(
+                    recipe__in=context['recipes']
+                    ).values_list('recipe', flat=True)
             )
             context['user_favorites'] = (
-                self.request.user.favorites
-                .filter(recipe__in=context['recipes'])
-                .values_list('recipe', flat=True)
+                self.request.user.favorites.filter(
+                    recipe__in=context['recipes']
+                    ).values_list('recipe', flat=True)
             )
         else:
             shop_list = AnonimousShopList(self.request)
@@ -87,8 +87,14 @@ class RecipeDetail(DetailView):
         context = super().get_context_data(**kwargs)
         context['ingredients_with_quantity'] = self.get_object().get_ingredients_with_quantity()
         if self.request.user.is_authenticated:
-            context['in_favorite'] = Favorite.objects.filter(user=self.request.user, recipe=self.object).exists()
-            context['in_followings'] = Follow.objects.filter(user=self.request.user, author=self.object.author).exists()
+            context['in_favorite'] = (
+                Favorite.objects.filter(
+                    user=self.request.user, recipe=self.object
+                    ).exists())
+            context['in_followings'] = (
+                Follow.objects.filter(
+                    user=self.request.user, author=self.object.author
+                    ).exists())
         return context
 
 

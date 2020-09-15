@@ -38,6 +38,7 @@ class UserFavorites(LoginRequiredMixin, ListView):
     template_name = 'pages/user/favorites.html'
     context_object_name = 'recipes'
     model = Recipe
+    paginate_by = 15
 
     def get_queryset(self):
         qs = Recipe.objects.filter(in_favorites__user=self.request.user).prefetch_related('in_shop_list')
@@ -62,6 +63,7 @@ class UserFollows(LoginRequiredMixin, ListView):
     template_name = 'pages/user/follows.html'
     context_object_name = 'follows'
     model = Follow
+    paginate_by = 15
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -85,6 +87,7 @@ class UserShopList(ListView):
     model = Ingredient
     template_name = 'pages/user/shoplist.html'
     context_object_name = 'recipes'
+    paginate_by = 15
 
     def get_queryset(self):
         if self.request.user.is_authenticated:

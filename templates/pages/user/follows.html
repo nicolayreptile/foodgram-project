@@ -15,6 +15,9 @@
   {% endfor %}
  </div>
 {% endblock content %}
+{% block pagination %}
+    {% include '../../main/pagination.html' with page_obj=page_obj %}
+{% endblock %}
 {% block scripts %}
  <script src="{% static '/js/components/MainCards.js' %}"></script>
 
