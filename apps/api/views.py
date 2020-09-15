@@ -1,26 +1,22 @@
 from django.shortcuts import get_object_or_404
 
 from rest_framework import status
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework.generics import ListAPIView
-from rest_framework.generics import GenericAPIView
-from rest_framework.mixins import CreateModelMixin
-from rest_framework.mixins import DestroyModelMixin
+from rest_framework.generics import GenericAPIView, ListAPIView
+from rest_framework.mixins import CreateModelMixin, DestroyModelMixin
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
-from apps.api.serialaizers import IngredientSerializer
-from apps.api.serialaizers import FavoriteSerializer
-from apps.api.serialaizers import FollowSerializer
-from apps.api.serialaizers import ShopListSerializer
-from apps.api.serialaizers import AnonimousShopListSerializer
-
-from apps.main.models import Ingredient
-from apps.main.models import Recipe
-from apps.users.models import Favorite
-from apps.users.models import Follow
-from apps.users.models import ShopList
+from apps.api.serializers import (
+    AnonimousShopListSerializer,
+    IngredientSerializer,
+    FavoriteSerializer,
+    FollowSerializer,
+    ShopListSerializer
+)
+from apps.main.models import Ingredient, Recipe
 from apps.users.anonimous_shop_list import AnonimousShopList
+from apps.users.models import Favorite, Follow, ShopList
 
 
 class IngredientList(ListAPIView):

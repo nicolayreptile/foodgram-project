@@ -2,12 +2,8 @@ from django.contrib.auth import get_user_model
 
 from rest_framework import serializers
 
-from apps.main.models import Recipe
-from apps.main.models import Ingredient
-
-from apps.users.models import Favorite
-from apps.users.models import Follow
-from apps.users.models import ShopList
+from apps.main.models import Ingredient, Recipe
+from apps.users.models import Favorite, Follow, ShopList
 from apps.users.anonimous_shop_list import AnonimousShopList
 
 

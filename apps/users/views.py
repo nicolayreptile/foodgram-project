@@ -1,17 +1,14 @@
-from django.views.generic import CreateView
-from django.views.generic import DetailView
-from django.views.generic import ListView
-from django.views import View
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import get_user_model
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import FileResponse
+from django.views import View
+from django.views.generic import CreateView, DetailView, ListView
 from django.urls import reverse_lazy
 
-from apps.main.models import Recipe
-from apps.main.models import Ingredient
+from apps.main.models import Ingredient, Recipe
+from apps.users.anonimous_shop_list import AnonimousShopList
 from apps.users.forms import UserSignupForm
 from apps.users.models import Follow
-from apps.users.anonimous_shop_list import AnonimousShopList
 from apps.users.helpers import ShopListToPdf
 
 

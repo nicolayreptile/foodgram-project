@@ -1,8 +1,6 @@
 from django import forms
-from apps.main.models import Ingredient
-from apps.main.models import Recipe
-from apps.main.models import RecipeIngredients
-from apps.main.models import Tag
+
+from apps.main.models import Ingredient, Recipe, RecipeIngredients, Tag
 
 
 class RecipeForm(forms.ModelForm):
@@ -78,15 +76,21 @@ class RecipeForm(forms.ModelForm):
 
     def __init__(self, data=None, *args, **kwargs):
         if data is not None:
-            ingredients = list(map(int, data.getlist('nameIngredient')))
-            quantity = list(map(int, data.getlist('valueIngredient')))
-            tags_ids = list(map(int, data.getlist('tags')))
-            data = data.copy()
-            data.update({
-                'ingredients_ids': ingredients,
-                'quantity_values': quantity,
-                'tags_ids': tags_ids,
-            })
+            try:
+                ingredients = [int(val) for val in data.getlist('nameIngredient')]
+                quantity = [int(val) for val in data.getlist('valueIngredient')]
+                tags_ids = [int(val) for val in data.getlist('tags')]
+                data = data.copy()
+                data.update({
+                    'ingredients_ids': ingredients,
+                    'quantity_values': quantity,
+                    'tags_ids': tags_ids,
+                })
+            except ValueError:
+                error = forms.ValidationError('Передены неккоретные данные. Проверьте правильность заполнения формы.')
+                self.add_error('ingredients', error)
+            except:
+                pass
         self.ingredients_dict = None
         self.tags_ids = None
         super().__init__(data=data, *args, **kwargs)
@@ -106,7 +110,7 @@ class RecipeForm(forms.ModelForm):
             error = forms.ValidationError('Добавлен не существующий ингредиент')
             self.add_error('ingredients', error)
 
-        less_zero_quantity_values = list(filter(lambda x: x < 0, quantity))
+        less_zero_quantity_values = [val for val in quantity if val < 0]
         if less_zero_quantity_values:
             error = forms.ValidationError('Отрицательное количество ингредиентов не может быть добавлено')
             self.add_error('ingredients', error)

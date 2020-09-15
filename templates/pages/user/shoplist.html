@@ -1,5 +1,8 @@
 {% extends '../../main/base.html' %}
 {% load static %}
+{% block head_title %}
+{{ block.super }} - Список покупок
+{% endblock %}
 {% block stylesheets %}
  <link rel="stylesheet" href="{% static '/pages/shopList.css' %}">
 {% endblock %}

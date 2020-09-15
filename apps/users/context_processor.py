@@ -1,5 +1,5 @@
-from apps.users.models import ShopList
 from apps.users.anonimous_shop_list import AnonimousShopList
+from apps.users.models import ShopList
 
 
 def shop_list_count(request):

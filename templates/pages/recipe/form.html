@@ -1,6 +1,6 @@
 {% extends '../../main/base.html' %}
-{% block stylesheets %}
 {% load static %}
+{% block stylesheets %}
  <link rel="stylesheet" href="{% static '/pages/form.css' %}">
 {% endblock  %}
 {% block content %}
@@ -15,8 +15,8 @@
                 {% if form.title.errors %}
                     {% for error in form.title.errors %}
                         <span class="form__error">{{ error }}</span>
-                    {% endfor %}                    
-                {% endif %} 
+                    {% endfor %}
+                {% endif %}
             </div>
     </div>
     <div class="form__group">
@@ -25,16 +25,9 @@
                 <div class="tags">
                     {% for tag in form.tags  %}
                     <div class="tags__item">
-                        <input type="checkbox" name="tags" id="id_breakfast" class="tags__checkbox tags__checkbox_style_
-                        {% if tag.data.label == "Завтрак" %}
-                        tags__checkbox_style_orange
-                        {% elif tag.data.label == "Обед" %}
-                        tags__checkbox_style_green
-                        {% elif tag.data.label == 'Ужин' %}
-                        tags__checkbox_style_purple
-                        {% endif %}" value={{ tag.data.value }}
+                        <input type="checkbox" name="tags" id="id_breakfast" class="tags__checkbox tags__checkbox_style_{{tag.data.value.instance.color}}" value={{ tag.data.value }}
                         {% if tag.data.selected %}checked{% endif %}
-                        >                        
+                        >
                         <label for="id_breakfast" class="tags__label">{{ tag.data.label }}</label>
                     </div>
                     {% endfor %}
@@ -42,8 +35,8 @@
                     {% if form.tags.errors %}
                         {% for error in form.tags.errors %}
                             <span class="form__error">{{ error }}</span>
-                        {% endfor %}                    
-                    {% endif %} 
+                        {% endfor %}
+                    {% endif %}
                 </div>
             </div>
             <div class="form__group">
@@ -53,8 +46,8 @@
                         <div class="form__dropdown">
                             {{ form.ingredients }}
                             <div class="form__dropdown-items"></div>
-                        </div> 
-                        {{ form.quantity }}                        
+                        </div>
+                        {{ form.quantity }}
                         <label for="cantidad" class="form__label" id="cantidadVal">шт.</label>
                     </div>
                     {% block ingredients %}
@@ -63,13 +56,13 @@
                     {% if form.ingredients.errors %}
                         {% for error in form.ingredients.errors %}
                             <span class="form__error">{{ error }}</span>
-                        {% endfor %}                    
+                        {% endfor %}
                     {% endif %}
                     {% if form.quantity.errors %}
                         {% for error in form.quantity.errors  %}
                             <span class="form__error">{{ error }}</span>
-                        {% endfor %}                    
-                    {% endif %} 
+                        {% endfor %}
+                    {% endif %}
                 </div>
             </div>
             <div class="form__group">
@@ -80,8 +73,8 @@
                     {% if form.cook_time.errors %}
                         {% for error in form.cook_time.errors  %}
                             <span class="form__error">{{ error }}</span>
-                        {% endfor %}                    
-                    {% endif %} 
+                        {% endfor %}
+                    {% endif %}
                 </div>
             </div>
             <div class="form__group">
@@ -91,8 +84,8 @@
                     {% if form.description.errors %}
                         {% for error in form.description.errors %}
                             <span class="form__error">{{ error }}</span>
-                        {% endfor %}                    
-                    {% endif %} 
+                        {% endfor %}
+                    {% endif %}
                 </div>
             </div>
             <div class="form__group">
@@ -103,8 +96,8 @@
                     {% if form.image.errors %}
                         {% for error in form.image.errors %}
                             <span class="form__error">{{ error }}</span>
-                        {% endfor %}                    
-                    {% endif %}                    
+                        {% endfor %}
+                    {% endif %}
                 </div>
             </div>
   <div class="form__footer">

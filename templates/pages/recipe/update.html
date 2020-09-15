@@ -1,4 +1,7 @@
 {% extends './form.html' %}
+{% block head_title %}
+{{ block.super }} - Изменение рецепта {{ recipe.title }}
+{% endblock %}
  {% block main_title %}Редактировать рецепт "{{ recipe.title }}"{% endblock %}
   {% block form_action %}{% url 'recipe_update' pk=recipe.pk %}{% endblock  %}
  {% block ingredients %}

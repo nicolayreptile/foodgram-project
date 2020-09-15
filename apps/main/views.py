@@ -1,20 +1,12 @@
-from django.views.generic import TemplateView
-from django.views.generic import ListView
-from django.views.generic import CreateView
-from django.views.generic import UpdateView
-from django.views.generic import DetailView
-from django.http import Http404
-
 from django.contrib.auth.mixins import LoginRequiredMixin
-
+from django.http import Http404
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
+from django.views.generic import CreateView, DetailView, ListView, TemplateView, UpdateView
 
-from apps.main.models import Recipe
 from apps.main.forms import RecipeForm
-
-from apps.users.models import Favorite
-from apps.users.models import Follow
+from apps.main.models import Recipe
+from apps.users.models import Favorite, Follow
 from apps.users.anonimous_shop_list import AnonimousShopList
 
 
@@ -102,3 +94,22 @@ class RecipeDetail(DetailView):
 
 class PageNotFound(TemplateView):
     template_name = 'errors/404.html'
+
+
+class InternalServerError(TemplateView):
+    template_name = 'errors/500.html'
+
+    @classmethod
+    def as_error_view(cls):
+        view_ = cls.as_view()
+
+        def view(request):
+            response = view_(request)
+            response.render()
+            return response
+
+        return view
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        return self.render_to_response(context, status=500)

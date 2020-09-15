@@ -1,6 +1,9 @@
 {% extends '../../main/base.html' %}
-{% block stylesheets %}'
 {% load static %}
+{% block head_title %}
+{{ block.super }} - Избранное
+{% endblock %}
+{% block stylesheets %}'
 <link rel="stylesheet" href="{% static '/pages/index.css' %}">
 {% endblock %}
 {% block main_title %}Избранное{% endblock %}
@@ -19,7 +22,7 @@
     <script src="{% static './js/components/MainCards.js' %}"></script>
     <script src="{% static '/js/components/Purchases.js' %}"></script>
     <script src="{% static '/js/components/Favorites.js' %}"></script>
-    
+
     <script src="{% static './js/components/CardList.js' %}"></script>
     <script src="{% static '/js/components/Header.js' %}"></script>
 

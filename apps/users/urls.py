@@ -1,10 +1,13 @@
 from django.urls import path, include
-from apps.users.views import UserSignup
-from apps.users.views import UserFavorites
-from apps.users.views import UserProfile
-from apps.users.views import UserFollows
-from apps.users.views import UserShopList
-from apps.users.views import UserShopListPdf
+
+from apps.users.views import (
+    UserFavorites,
+    UserFollows,
+    UserProfile,
+    UserSignup,
+    UserShopList,
+    UserShopListPdf
+)
 
 from django.contrib.auth import urls as auth_urls
 
@@ -15,6 +18,6 @@ urlpatterns = [
     path('follows', UserFollows.as_view(), name='follows'),
     path('shoplist', UserShopList.as_view(), name='shoplist'),
     path('shoplist/download', UserShopListPdf.as_view(), name='shoplist_download'),
-    path('profile/<str:username>/', UserProfile.as_view(), name='profile'),
+    path('profile/<slug:username>/', UserProfile.as_view(), name='profile'),
     path('', include(auth_urls))
 ]

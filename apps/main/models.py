@@ -7,7 +7,15 @@ User = get_user_model()
 
 
 class Tag(models.Model):
+
+    COLORS = (
+        ('orange', 'orange'),
+        ('green', 'green'),
+        ('purple', 'purple'),
+    )
+
     name = models.CharField('Название', max_length=254)
+    color = models.CharField('Цвет для CSS', max_length=254, choices=COLORS)
 
     class Meta:
         verbose_name = 'тэг'

@@ -1,4 +1,7 @@
 {% extends '../main/base.html' %}
+{% block head_title %}
+{{ block.super }} - Регистрация
+{% endblock %}
 {% block stylesheets %}
 {% load static %}
  <link rel="stylesheet" href="{% static '/pages/form.css' %}">

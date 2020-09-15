@@ -1,5 +1,8 @@
 {% extends '../../main/base.html' %}
 {% load static %}
+{% block head_title %}
+{{ block.super }} - {{ recipe.title }}
+{% endblock %}
 {% block stylesheets %}
 <link rel="stylesheet" href="{% static '/pages/single.css' %}">
 {% endblock  %}
@@ -9,7 +12,7 @@
             <img src="{{ recipe.image.url }}" alt="какой-то текст" class="single-card__image">
             <div class="single-card__info">
                 <div class="single-card__header-info">
-                    <h1 class="single-card__title">{{recipe.title}}</h1>                    
+                    <h1 class="single-card__title">{{recipe.title}}</h1>
                     {% if user.is_authenticated %}
                         <div class="single-card__favorite">
                             <button class="button button_style_none" name="favorites" {% if not in_favorite %}data-out{% endif %}><span class="icon-favorite {% if in_favorite %}icon-favorite_active{% else %}icon-favorite_big{% endif %}"></span></button>
@@ -21,11 +24,7 @@
                 <ul class="single-card__items">
                 {% for tag in recipe.tags.all %}
                     <li class="single-card__item">
-                        <span class="badge 
-                            {% if tag.name == 'Обед' %}badge_style_green
-                            {% elif tag.name == 'Завтрак' %}badge_style_orange
-                            {% elif tag.name == 'Ужин' %}badge_style_purple                    
-                            {% endif %}">
+                        <span class="badge badge_style_{{ tag.color }}">
                             {{ tag }}
                         </span>
                     </li>
