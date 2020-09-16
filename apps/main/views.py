@@ -101,8 +101,8 @@ class RecipeDetail(DetailView):
 
 
 class AboutPage(TemplateView):
-    template_name = 'about.html'
+    template_name = 'pages/about.html'
 
 
 class TechnologiesPage(TemplateView):
-    template_name = 'technologies.html'
+    template_name = 'pages/technologies.html'
