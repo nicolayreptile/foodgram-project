@@ -1,24 +1,39 @@
 upstream foodgram {
     server web:8000;
 }
-
 server {
-
     listen 80;
-    server_name localhost;
+    server_name www.foodgram.gq;
+    server_tokens off;
 
+    location /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+    }
     location / {
-        proxy_pass http:/foodgram;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header Host $host;
-        proxy_redirect off;
+        return 301 https://$host$request_uri;
     }
-
-    location /static/ {
-        alias /opt/services/web/static/;
-    }
-
-    location /media/ {
-        alias /opt/services/web/media/;
-    }
+}
+server { 
+    listen 443 ssl; 
+    server_name www.foodgram.gq; 
+    server_tokens off; 
+ 
+    ssl_certificate /etc/letsencrypt/live/foodgram.gq/fullchain.pem; 
+    ssl_certificate_key /etc/letsencrypt/live/foodgram.gq/privkey.pem; 
+    include /etc/letsencrypt/options-ssl-nginx.conf; 
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; 
+ 
+    location / { 
+        proxy_pass http://foodgram; 
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; 
+        proxy_set_header Host $host; 
+        proxy_redirect off; 
+    } 
+    location /static/ { 
+        alias /opt/services/web/static/; 
+    } 
+ 
+    location /media/ { 
+        alias /opt/services/web/media/; 
+    } 
 }
