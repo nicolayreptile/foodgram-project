@@ -3,12 +3,11 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
-from apps.main.views import InternalServerError, PageNotFound
 from foodgram import settings
 
 
-handler404 = PageNotFound.as_view()
-handler500 = InternalServerError.as_error_view()
+handler404 = 'apps.main.error_handlers.page_not_found'
+handler500 = 'apps.main.error_handlers.server_error'
 
 
 urlpatterns = [

@@ -1,7 +1,9 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import Http404
+from django.http import Http404, HttpResponseServerError
 from django.shortcuts import redirect
+from django.template import loader
 from django.urls import reverse_lazy
+from django.views import View
 from django.views.generic import CreateView, DetailView, ListView, TemplateView, UpdateView
 
 from apps.main.forms import RecipeForm
@@ -96,29 +98,6 @@ class RecipeDetail(DetailView):
                     user=self.request.user, author=self.object.author
                     ).exists())
         return context
-
-
-class PageNotFound(TemplateView):
-    template_name = 'errors/404.html'
-
-
-class InternalServerError(TemplateView):
-    template_name = 'errors/500.html'
-
-    @classmethod
-    def as_error_view(cls):
-        view_ = cls.as_view()
-
-        def view(request):
-            response = view_(request)
-            response.render()
-            return response
-
-        return view
-
-    def get(self, request, *args, **kwargs):
-        context = self.get_context_data(**kwargs)
-        return self.render_to_response(context, status=500)
 
 
 class AboutPage(TemplateView):
