@@ -1,4 +1,14 @@
 {% extends '../main/base.html' %}
 {% block main_title%}
-Страница не найдена
+Такой страницы нет :-(
+{% endblock %}
+{% block content %}
+<div class="card-list">
+    <p>Но есть много других интересных: потыкай в пункты меню наверху.</p>
+    <p>
+        <a href="https://www.instagram.com/tunameltsmyheart/">
+            <img src="{% static 'images/tuna.jpg' %}">
+        </a>
+    </p>
+</div>
 {% endblock %}

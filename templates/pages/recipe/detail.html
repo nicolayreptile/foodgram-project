@@ -9,7 +9,10 @@
 {% block content %}
    <div class="single-card" data-id="{{ recipe.id }}" data-author="{{ recipe.author.pk }}">
             {% csrf_token %}
-            <img src="{{ recipe.image.url }}" alt="какой-то текст" class="single-card__image">
+            {% load thumbnail %}
+            {% thumbnail recipe.image "840x840" crop="center" upscale=True as image %}
+            <img src="{{ image.url }}" alt="какой-то текст" class="single-card__image">
+            {% endthumbnail %}
             <div class="single-card__info">
                 <div class="single-card__header-info">
                     <h1 class="single-card__title">{{recipe.title}} {% if recipe.author == user %}<a title="Изменить" href='{% url 'recipe_update' pk=recipe.pk %}'><span class="icon-edit"></span></a>{% endif %}</h1>
@@ -31,8 +34,11 @@
                 {% endfor %}
                 </ul>
                 <div class="single-card__items single-card__items_column">
-                    <p class="single-card__text"><span class="icon-time"></span>{{ recipe.cook_time }}</p>
-                    <p class="single-card__text"><span class="icon-user"></span><a href="{% url 'profile' username=recipe.author.username %}" style="color: black">{{ recipe.author }}</a></p>
+                    <p class="single-card__text"><span class="icon-time"></span> {{ recipe.cook_time }}</p>
+                    <p class="single-card__text">
+                        <span class="icon-user"></span>
+                        <a href="{% url 'profile' username=recipe.author.username %}" style="color: black"> {{ recipe.author }}</a>
+                    </p>
                 </div>
                 <ul class="single-card__items">
                     <li class="single-card__item"><button class="button button_style_blue" name="purchases" data-out><span class="icon-plus"></span> Добавить в покупки</button></li>
@@ -50,7 +56,7 @@
                     <h3 class="single-card__section-title">Ингридиенты:</h3>
                     <div class="single-card__items single-card__items_column">
                     {% for item in ingredients_with_quantity %}
-                     <p class=" single-card__section-item">{{ item.ingredient }} - {{ item.quantity }} {{ item.ingredient.unit }}.</p>
+                        <p class="single-card__section-item">{{ item.ingredient }} - {{ item.quantity }} {{ item.ingredient.unit }}.</p>
                     {% endfor %}
                     </div>
                 </div>

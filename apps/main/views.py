@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, ListView, UpdateView
 
 from apps.main.forms import RecipeForm
-from apps.main.models import Recipe
+from apps.main.models import Recipe, Tag
 from apps.users.models import Favorite, Follow
 from apps.users.anonimous_shop_list import AnonimousShopList
 
@@ -15,15 +15,15 @@ class RecipeList(ListView):
     queryset = Recipe.objects.prefetch_related('tags')
     context_object_name = 'recipes'
     template_name = 'pages/index.html'
-    paginate_by = 15
+    paginate_by = 6
 
     def get_queryset(self):
         qs = super().get_queryset()
         exclude_tags = self.request.GET.get('exclude')
         if exclude_tags:
             try:
-                exclude_tags = list(exclude_tags)
-                qs = qs.exclude(tags__pk__in=exclude_tags)
+                include = Tag.objects.exclude(pk__in=list(exclude_tags))
+                qs = qs.filter(tags__in=include)
             except ValueError:
                 raise Http404
         return qs

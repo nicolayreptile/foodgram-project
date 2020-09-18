@@ -23,8 +23,8 @@ class IngredientList(ListAPIView):
     serializer_class = IngredientSerializer
 
     def get_queryset(request, *args, **kwargs):
-        query = request.kwargs.get('query')
-        return Ingredient.objects.filter(name__contains=query)
+        query = request.kwargs.get('query').lower()
+        return Ingredient.objects.filter(name__istartswith=query)
 
 
 class UserActivityBaseHandler(CreateModelMixin,

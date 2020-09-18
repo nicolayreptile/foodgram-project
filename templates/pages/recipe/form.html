@@ -69,7 +69,7 @@
                 <label for="id_time" class="form__label">Время приготовления</label>
                 <div class="form__field-group form__field-group_time">
                     {{ form.cook_time }}
-                    <label for="id_time" class="form__label">минут</label>
+                    <label for="id_time" class="form__label">часов/минут</label>
                     {% if form.cook_time.errors %}
                         {% for error in form.cook_time.errors  %}
                             <span class="form__error">{{ error }}</span>

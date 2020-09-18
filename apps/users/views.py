@@ -1,10 +1,11 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import FileResponse
 from django.views import View
-from django.views.generic import CreateView, DetailView, ListView
+from django.views.generic import CreateView, ListView
+from django.views.generic.detail import SingleObjectMixin
 from django.urls import reverse_lazy
 
-from apps.main.models import Recipe
+from apps.main.models import Recipe, Tag
 from apps.users.anonimous_shop_list import AnonimousShopList
 from apps.users.forms import UserSignupForm
 from apps.users.models import Follow, User
@@ -17,27 +18,59 @@ class UserSignup(CreateView):
     success_url = reverse_lazy('login')
 
 
-class UserProfile(DetailView):
-    model = User
+class UserProfile(ListView, SingleObjectMixin):
     template_name = 'pages/user/profile.html'
+    context_object_name = 'recipes'
     slug_field = 'username'
     slug_url_kwarg = 'username'
-    context_object_name = 'author'
+    paginate_by = 6
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object(queryset=User.objects.all())
+        return super().get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['recipes'] = Recipe.objects.filter(author=context['author'])
+        context['author'] = self.object
         if self.request.user.is_authenticated:
             context['in_followings'] = Follow.objects.filter(
-                user=self.request.user, author=context['author'])
+                user=self.request.user, author=self.object)
+            context['user_favorites'] = self.request.user.favorites.filter(
+                recipe__in=context['recipes']
+            ).values_list('recipe', flat=True)
+            context['user_shop_list'] = self.request.user.shop_list.filter(
+                recipe__in=context['recipes']
+            ).values_list('recipe', flat=True)
+        else:
+            shop_list = AnonimousShopList(self.request)
+            context['user_shop_list'] = shop_list.items
         return context
+
+    def get_queryset(self):
+        qs = Recipe.objects.prefetch_related(
+                'tags'
+                ).prefetch_related(
+                'in_favorites'
+                ).select_related(
+                'author'
+                ).filter(author=self.object)
+
+        exclude_tags = self.request.GET.get('exclude')
+        if exclude_tags:
+            try:
+                include = Tag.objects.exclude(pk__in=list(exclude_tags))
+                qs = qs.filter(tags__in=include)
+            except ValueError:
+                raise Http404
+
+        return qs
 
 
 class UserFavorites(LoginRequiredMixin, ListView):
     template_name = 'pages/user/favorites.html'
     context_object_name = 'recipes'
     model = Recipe
-    paginate_by = 15
+    paginate_by = 6
 
     def get_queryset(self):
         qs = Recipe.objects.filter(
@@ -45,15 +78,15 @@ class UserFavorites(LoginRequiredMixin, ListView):
         ).prefetch_related('in_shop_list')
         exclude_tags = self.request.GET.get('exclude')
         if exclude_tags:
-            exclude_tags = list(exclude_tags)
-            qs = qs.exclude(tags__pk__in=exclude_tags)
+            include = Tag.objects.exclude(pk__in=list(exclude_tags))
+            qs = qs.filter(tags__in=include)
         return qs
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['user_shop_list'] = self.request.user.shop_list.filter(
             recipe__in=context['recipes']
-        ).values_list('recipe', flat=True)
+            ).values_list('recipe', flat=True)
         return context
 
 
@@ -61,7 +94,7 @@ class UserFollows(LoginRequiredMixin, ListView):
     template_name = 'pages/user/follows.html'
     context_object_name = 'follows'
     model = Follow
-    paginate_by = 15
+    paginate_by = 6
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -82,7 +115,7 @@ class UserFollows(LoginRequiredMixin, ListView):
 class UserShopList(ListView):
     template_name = 'pages/user/shoplist.html'
     context_object_name = 'recipes'
-    paginate_by = 15
+    paginate_by = 6
 
     def get_queryset(self):
         if self.request.user.is_authenticated:
