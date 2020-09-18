@@ -4,7 +4,7 @@ Link [https://foodgram.gq/](https://foodgram.gq/)
 
 ## About
 
-##### Foodgram is a web project on Django Framework allowed publish recipes by users. Foodgram allows users adding recipes to favorites, following authors and creating shop list of ingredients into PDF.
+Foodgram is a web project on Django Framework allowed publish recipes by users. Foodgram allows users adding recipes to favorites, following authors and creating shop list of ingredients into PDF.
 
 ## Installation
 
@@ -37,4 +37,4 @@ docker exec -it foodgram_project_web_1 python manage.py migrate
 docker exec -it foodgram_project_web_1 python manage.py createsuperuser
 ```
 ### 6. Finally
-##### For any questions contact with on Telegram @nicolay_reptile
+For any questions contact with on Telegram @nicolay_reptile
