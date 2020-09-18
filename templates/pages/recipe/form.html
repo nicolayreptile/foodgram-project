@@ -44,7 +44,7 @@
                 <div class="form__field-group">
                     <div class="form__field-group-ingredientes">
                         <div class="form__dropdown">
-                            {{ form.ingredients }}
+                            <input type="text" name="{{form.ingredients.name}}" value="" id="nameIngredient" class="form__input">
                             <div class="form__dropdown-items"></div>
                         </div>
                         {{ form.quantity }}
