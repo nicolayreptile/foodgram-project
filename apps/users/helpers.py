@@ -16,7 +16,9 @@ class ShopListToPdf:
     def __init__(self, request):
         self.for_username = 'гостя'
         if request.user.is_authenticated:
-            recipes = Recipe.objects.filter(in_shop_list__user=request.user).prefetch_related('ingredients')
+            recipes = Recipe.objects.filter(
+                in_shop_list__user=request.user
+            ).prefetch_related('ingredients')
             self.for_username = request.user.username
         else:
             shop_list = AnonimousShopList(request)

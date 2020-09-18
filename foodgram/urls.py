@@ -15,6 +15,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('apps.api.urls')),
     path('user/', include('apps.users.urls')),
+    path('/', include('django.contrib.flatpages.urls')),
 ]
 
 if settings.DEBUG:

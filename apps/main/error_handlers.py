@@ -1,3 +1,4 @@
+from django.utils.http import quote
 from django.http import HttpResponseNotFound, HttpResponseServerError
 from django.template import loader
 from django.views.decorators.csrf import requires_csrf_token
@@ -5,7 +6,7 @@ from django.views.decorators.csrf import requires_csrf_token
 
 @requires_csrf_token
 def page_not_found(request, exception):
-    tempalte_name = 'errors/404.html'
+    template_name = 'errors/404.html'
     template = loader.get_template(template_name)
     exception_repr = exception.__class__.__name__
     try:

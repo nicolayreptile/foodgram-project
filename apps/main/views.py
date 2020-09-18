@@ -1,10 +1,8 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import Http404, HttpResponseServerError
+from django.http import Http404
 from django.shortcuts import redirect
-from django.template import loader
 from django.urls import reverse_lazy
-from django.views import View
-from django.views.generic import CreateView, DetailView, ListView, TemplateView, UpdateView
+from django.views.generic import CreateView, DetailView, ListView, UpdateView
 
 from apps.main.forms import RecipeForm
 from apps.main.models import Recipe
@@ -24,7 +22,7 @@ class RecipeList(ListView):
         exclude_tags = self.request.GET.get('exclude')
         if exclude_tags:
             try:
-                exclude_tags = [int(tag_id) for tag_id in list(exclude_tags)]
+                exclude_tags = list(exclude_tags)
                 qs = qs.exclude(tags__pk__in=exclude_tags)
             except ValueError:
                 raise Http404
@@ -33,16 +31,12 @@ class RecipeList(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         if self.request.user.is_authenticated:
-            context['user_shop_list'] = (
-                self.request.user.shop_list.filter(
-                    recipe__in=context['recipes']
-                    ).values_list('recipe', flat=True)
-            )
-            context['user_favorites'] = (
-                self.request.user.favorites.filter(
-                    recipe__in=context['recipes']
-                    ).values_list('recipe', flat=True)
-            )
+            context['user_shop_list'] = self.request.user.shop_list.filter(
+                recipe__in=context['recipes']
+            ).values_list('recipe', flat=True)
+            context['user_favorites'] = self.request.user.favorites.filter(
+                recipe__in=context['recipes']
+            ).values_list('recipe', flat=True)
         else:
             shop_list = AnonimousShopList(self.request)
             context['user_shop_list'] = shop_list.items
@@ -89,20 +83,10 @@ class RecipeDetail(DetailView):
         context = super().get_context_data(**kwargs)
         context['ingredients_with_quantity'] = self.get_object().get_ingredients_with_quantity()
         if self.request.user.is_authenticated:
-            context['in_favorite'] = (
-                Favorite.objects.filter(
-                    user=self.request.user, recipe=self.object
-                    ).exists())
-            context['in_followings'] = (
-                Follow.objects.filter(
-                    user=self.request.user, author=self.object.author
-                    ).exists())
+            context['in_favorite'] = Favorite.objects.filter(
+                user=self.request.user, recipe=self.object
+            ).exists()
+            context['in_followings'] = Follow.objects.filter(
+                user=self.request.user, author=self.object.author
+            ).exists()
         return context
-
-
-class AboutPage(TemplateView):
-    template_name = 'pages/about.html'
-
-
-class TechnologiesPage(TemplateView):
-    template_name = 'pages/technologies.html'
