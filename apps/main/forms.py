@@ -116,7 +116,7 @@ class RecipeForm(forms.ModelForm):
             self.add_error('ingredients', error)
 
         self.ingredients_dict = dict(zip(ids, quantity))
-        self.tags_ids = self.data['tags']
+        self.tags_ids = self.data['tags_ids']
 
         return cleaned_data
 
