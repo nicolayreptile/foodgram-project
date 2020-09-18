@@ -9,10 +9,7 @@
 {% block content %}
    <div class="single-card" data-id="{{ recipe.id }}" data-author="{{ recipe.author.pk }}">
             {% csrf_token %}
-             {% load thumbnail %}
-            {% thumbnail recipe.image "580x400" crop="center" upscale=True as image %}
-            <img src="{{ image }}" alt="какой-то текст" class="single-card__image">
-            {% endthumbnail %}
+            <img src="{{ recipe.image.url }}" alt="какой-то текст" class="single-card__image">
             <div class="single-card__info">
                 <div class="single-card__header-info">
                     <h1 class="single-card__title">{{recipe.title}} {% if recipe.author == user %}<a title="Изменить" href='{% url 'recipe_update' pk=recipe.pk %}'><span class="icon-edit"></span></a>{% endif %}</h1>
