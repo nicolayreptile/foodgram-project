@@ -19,6 +19,7 @@ def page_not_found(request, exception):
     context = {
         'request_path': quote(request.path),
         'exception': exception_repr,
+        'user': request.user,
     }
     return HttpResponseNotFound(template.render(context))
 
@@ -27,4 +28,7 @@ def page_not_found(request, exception):
 def server_error(request, *args, **kwargs):
     template_name = 'errors/500.html'
     template = loader.get_template(template_name)
-    return HttpResponseServerError(template.render())
+    context = {
+        'user': request.user,
+    }
+    return HttpResponseServerError(template.render(context))
