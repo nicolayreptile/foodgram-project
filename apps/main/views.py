@@ -6,7 +6,7 @@ from django.views.generic import CreateView, DetailView, ListView, UpdateView
 
 from apps.main.forms import RecipeForm
 from apps.main.models import Recipe, Tag
-from apps.users.models import Favorite, Follow
+from apps.users.models import Favorite, Follow, ShopList
 from apps.users.anonimous_shop_list import AnonimousShopList
 
 
@@ -83,10 +83,16 @@ class RecipeDetail(DetailView):
         context = super().get_context_data(**kwargs)
         context['ingredients_with_quantity'] = self.get_object().get_ingredients_with_quantity()
         if self.request.user.is_authenticated:
+            context['in_shop_list'] = ShopList.objects.filter(
+                user=self.request.user, recipe=self.object
+            ).exists()
             context['in_favorite'] = Favorite.objects.filter(
                 user=self.request.user, recipe=self.object
             ).exists()
             context['in_followings'] = Follow.objects.filter(
                 user=self.request.user, author=self.object.author
             ).exists()
+        else:
+            shop_list = AnonimousShopList(self.request)
+            context['in_shop_list'] = self.get_object().pk in shop_list.items
         return context
