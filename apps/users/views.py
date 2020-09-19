@@ -1,7 +1,8 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import FileResponse
+from django.core.paginator import Paginator
+from django.http import FileResponse, Http404
 from django.views import View
-from django.views.generic import CreateView, ListView
+from django.views.generic import CreateView, ListView, TemplateView
 from django.views.generic.detail import SingleObjectMixin
 from django.urls import reverse_lazy
 
@@ -90,24 +91,38 @@ class UserFavorites(LoginRequiredMixin, ListView):
         return context
 
 
-class UserFollows(LoginRequiredMixin, ListView):
+class UserFollows(LoginRequiredMixin, TemplateView):
     template_name = 'pages/user/follows.html'
-    context_object_name = 'follows'
-    model = Follow
-    paginate_by = 6
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
+        page_num = self.request.GET.get('page', 1)
+
         authors = User.objects.filter(following__user=self.request.user)
         recipes = Recipe.objects.filter(author__in=authors)
 
-        context['follows'] = []
+        follows = []
         for author in authors:
-            context['follows'].append({
+            follows.append({
                 'author': author,
                 'recipes': recipes.filter(author=author)[:3]
             })
+        paginator = Paginator(follows, 6)
+        try:
+            page_num = int(page_num)
+        except ValueError:
+            if page_num == 'last':
+                page_num = paginator.num_pages
+        except:
+            raise Http404
+
+        page_obj = paginator.page(page_num)
+
+        context.update({
+            'paginator': paginator,
+            'page_obj': page_obj,
+        })
 
         return context
 

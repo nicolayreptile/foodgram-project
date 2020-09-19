@@ -10,7 +10,7 @@
 {% block content %}
   <div class="card-list">
   {% csrf_token %}
-  {% for follow in follows %}
+  {% for follow in page_obj %}
     {% include '../../panels/following_author.html' with author=follow.author recipes=follow.recipes %}
   {% endfor %}
  </div>
