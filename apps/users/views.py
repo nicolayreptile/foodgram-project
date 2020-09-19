@@ -1,5 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, InvalidPage
 from django.http import FileResponse, Http404
 from django.views import View
 from django.views.generic import CreateView, ListView, TemplateView
@@ -108,16 +108,19 @@ class UserFollows(LoginRequiredMixin, TemplateView):
                 'author': author,
                 'recipes': recipes.filter(author=author)[:3]
             })
+
         paginator = Paginator(follows, 6)
+
         try:
             page_num = int(page_num)
         except ValueError:
             if page_num == 'last':
                 page_num = paginator.num_pages
-        except:
-            raise Http404
 
-        page_obj = paginator.page(page_num)
+        try:
+            page_obj = paginator.page(page_num)
+        except InvalidPage:
+            raise Http404
 
         context.update({
             'paginator': paginator,
