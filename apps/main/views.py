@@ -23,7 +23,7 @@ class RecipeList(ListView):
         if exclude_tags:
             try:
                 include = Tag.objects.exclude(pk__in=list(exclude_tags))
-                qs = qs.filter(tags__in=include)
+                qs = qs.filter(tags__in=include).distinct()
             except ValueError:
                 raise Http404
         return qs

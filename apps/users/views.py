@@ -60,7 +60,7 @@ class UserProfile(ListView, SingleObjectMixin):
         if exclude_tags:
             try:
                 include = Tag.objects.exclude(pk__in=list(exclude_tags))
-                qs = qs.filter(tags__in=include)
+                qs = qs.filter(tags__in=include).distinct()
             except ValueError:
                 raise Http404
 
@@ -80,7 +80,7 @@ class UserFavorites(LoginRequiredMixin, ListView):
         exclude_tags = self.request.GET.get('exclude')
         if exclude_tags:
             include = Tag.objects.exclude(pk__in=list(exclude_tags))
-            qs = qs.filter(tags__in=include)
+            qs = qs.filter(tags__in=include).distinct()
         return qs
 
     def get_context_data(self, **kwargs):
@@ -145,7 +145,7 @@ class UserShopList(ListView):
         exclude_tags = self.request.GET.get('exclude')
         if exclude_tags:
             exclude_tags = list(exclude_tags)
-            qs = qs.exclude(tags__pk__in=exclude_tags)
+            qs = qs.exclude(tags__pk__in=exclude_tags).distinct()
 
         return qs
 
